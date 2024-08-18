@@ -84,19 +84,27 @@ class CourseSerializer(serializers.ModelSerializer):
 
     def get_groups_filled_percent(self, obj):
         """Процент заполнения групп, если в группе максимум 30 чел.."""
-        return (
-            User.objects.filter(study_groups__course=obj).count()
-            / (30 * obj.groups.count())
-            * 100
-        )
-
+        try:
+            per = (
+                User.objects.filter(study_groups__course=obj).count()
+                / (30 * obj.groups.count())
+                * 100
+            )
+        except ZeroDivisionError:
+            return 0
+        return per
+        
     def get_demand_course_percent(self, obj):
         """Процент приобретения курса."""
-        return (
-            Subscription.objects.filter(course=obj).count()
-            / Subscription.objects.count()
-            * 100
-        )
+        try:
+            per = (
+                Subscription.objects.filter(course=obj).count()
+                / Subscription.objects.count()
+                * 100
+            )
+        except ZeroDivisionError:
+            return 0
+        return per
 
     class Meta:
         model = Course
@@ -119,3 +127,4 @@ class CreateCourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
+        fields = "__all__"

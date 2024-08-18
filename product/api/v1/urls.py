@@ -39,9 +39,5 @@ urlpatterns += [
         'redoc/',
         SpectacularRedocView.as_view(url_name='schema'),
         name='redoc',
-    ),
-    path(
-        'users/<int:pk>/bonus',
-        UserViewSet.as_view(actions={'post': 'bonus'})
     )
 ]

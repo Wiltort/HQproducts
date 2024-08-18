@@ -12,7 +12,6 @@ def create_balance(sender, instance, created, **kwargs):
     """
     Создает новому пользователю баланс равный 1000 бонусов.
     """
-    print("new")
     if created:
         instance.balance = Balance.objects.create(value=1000, user=instance)
         instance.save()
